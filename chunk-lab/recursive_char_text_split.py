@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load document
-loader = TextLoader("/Users/saravana/workspace/ai/rag_mvp/data/company_policy.txt")
+loader = TextLoader("../data/company_policy.txt")
 documents = loader.load()
 
 # Split into chunks
