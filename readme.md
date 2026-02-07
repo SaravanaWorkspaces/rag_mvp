@@ -1,6 +1,6 @@
 ## RAG_MVP
 
-Just a random project to understand RAG's chunking technics
+Just a random project to understand RAG's chunking techniques
 
 1.  Fixed size
 
@@ -40,3 +40,13 @@ Just a random project to understand RAG's chunking technics
         - Increased storage & cost
 
 3.  Structure-Aware Chunking
+
+        - header based chunking
+        - pdf document chunking
+        - html document chunking
+
+brew install poppler
+
+alternate 
+
+PyPDFLoader
