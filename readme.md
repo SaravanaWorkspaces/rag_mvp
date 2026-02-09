@@ -158,6 +158,70 @@ All chunking experiments live inside `chunk-lab/`
 
 ---
 
+### 5. Token-Based Chunking
+
+    File: chunk-lab/token_based.py
+
+    Splits by token count, not character count — because LLMs read tokens, not characters
+
+    What is a token?
+
+        A token is a **subword unit** defined by the tokenizer (tiktoken).
+        It splits by spelling patterns, not by meaning or word boundaries.
+
+        Token ≠ Word. Rough rule: 1 token ≈ 4 characters ≈ ¾ of a word.
+
+        ```
+        "Employees"     → 1 token    (simple word)
+        "unhappiness"   → 2 tokens   ["un", "happiness"]
+        "ChatGPT"       → 2 tokens   ["Chat", "GPT"]
+        "I'm"           → 2 tokens   ["I", "'m"]
+        "hello"         → 1 token
+        ```
+
+    Why not just use character chunking?
+
+        `chunk_size = 500 chars` → could be 80 tokens or 150 tokens (unpredictable)
+        `chunk_size = 50 tokens` → always exactly ≤ 50 tokens (guaranteed)
+
+        LLMs have **token limits** not character limits:
+            GPT-4 = 128K tokens, Embedding API = 8,191 tokens
+
+    ```
+    TokenTextSplitter(
+        chunk_size=50,       # max 50 TOKENS per chunk (not characters!)
+        chunk_overlap=10     # last 10 TOKENS repeat in next chunk
+    )
+    ```
+
+    `chunk_size = 50` → max 50 tokens per chunk
+    `chunk_overlap = 10` → last 10 tokens of chunk N = first 10 tokens of chunk N+1
+
+    Character vs Token split:
+
+        ```
+        Text: "Sick leave requires a medical certificate"
+
+        Character (chunk_size=30): "Sick leave requires a medical " | "certificate"
+                                                      ↑ cuts at 30 chars blindly
+
+        Token (chunk_size=6): "Sick leave requires a medical certificate"
+                                                      ↑ 6 tokens, clean boundary
+        ```
+
+    Used when:
+
+        - Feeding chunks to LLMs or embedding APIs
+        - Need precise control over token limits
+        - Production RAG systems
+
+    Limit:
+
+        - Slightly slower (runs tiktoken tokenizer)
+        - Needs: `pip install tiktoken`
+
+---
+
 ### Summary
 
     | # | Method              | File                          | Splits by        |
@@ -167,5 +231,8 @@ All chunking experiments live inside `chunk-lab/`
     | 3a| Header-Based        | document-based/header_based.py| Markdown headers |
     | 3b| PDF-Based           | document-based/pdf_based.py   | PDF structure    |
     | 4 | Similarity-Based    | similarity_based.py           | Semantic meaning |
+    | 5 | Token-Based         | token_based.py                | Token count      |
+
+    Simple → Smart: 1 → 2 → 5 → 3 → 4
 
     Simple → Smart: 1 → 2 → 3 → 4
