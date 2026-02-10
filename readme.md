@@ -38,7 +38,7 @@ rag_mvp/
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/rag_mvp.git
+git clone https://github.com/SaravanaWorkspaces/rag_mvp.git
 cd rag_mvp
 
 # 2. Setup
