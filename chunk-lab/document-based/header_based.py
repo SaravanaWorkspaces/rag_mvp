@@ -7,7 +7,7 @@ from langchain_community.vectorstores import FAISS
 from dotenv import load_dotenv
 load_dotenv()
 
-loader = TextLoader("/Users/saravana/workspace/ai/rag_mvp/data/sample_markdown.md")
+loader = TextLoader("../data/sample_markdown.md")
 documents = loader.load()
 
 markdown_splitter = MarkdownHeaderTextSplitter(
